@@ -237,8 +237,9 @@ ul{margin:8px 0 0;padding-left:20px} li{margin:0 0 5px}
 
     <section class="sec" aria-labelledby="h-car">
       <h2 id="h-car">Características</h2>
-      <h3>Fondos</h3>
+      <h3>Fondos (informes mensuales al 31/10/2026)</h3>
       <div class="tw"><table id="fundtbl"></table></div>
+      <p class="small muted" style="margin:6px 0 0">(1) Corresponde a la porción de renta fija del fondo. Los fondos con renta variable no informan calificación crediticia.</p>
       <h3 style="margin-top:14px">Obligaciones negociables</h3>
       <div class="tw"><table id="ontbl"></table></div>
       <h3 style="margin-top:14px">ETP</h3>
@@ -250,15 +251,15 @@ ul{margin:8px 0 0;padding-left:20px} li{margin:0 0 5px}
         <summary id="h-met">Metodología y fuentes</summary>
         <ul class="small">
           <li><b>Simulación retroactiva.</b> La cartera se arma con los precios históricos del 02/02/2026. No corresponde a una cuenta real ni a clientes.</li>
-          <li><b>Fondos.</b> Suscripción en dólar cable al valor de la cuotaparte del 02/02, en múltiplos de 1.000 cuotapartes (mínimo de suscripción): lo que no alcanza para otro bloque queda en caja. Los cupones reinvertidos, repartidos entre los cuatro fondos según sus pesos, siguen la misma regla; el remanente se acumula hasta completar un bloque. Valores diarios de la plataforma de asesores de Balanz; al 31/10 los de Short Duration y Latam coinciden con el NAV de sus informes mensuales; Balanced y Global Equity no se contrastaron con un informe.</li>
+          <li><b>Fondos.</b> Suscripción en dólar cable al valor de la cuotaparte del 02/02, en múltiplos de 1.000 cuotapartes (mínimo de suscripción): lo que no alcanza para otro bloque queda en caja. Los cupones reinvertidos, repartidos entre los cuatro fondos según sus pesos, siguen la misma regla; el remanente se acumula hasta completar un bloque. Valores diarios de la plataforma de asesores de Balanz; al 31/10 los cuatro fondos coinciden con el NAV de sus informes mensuales.</li>
           <li><b>ON.</b> Compra en dólar MEP (líneas PLC5D, TTCDD, YMCXD) al cierre del 02/02, en nominales enteros según la lámina mínima: 1 VN en YMCXO y 1.000 VN en PLC5O y TTCDO. Lo que no alcanza para otra lámina queda en caja, sin rendimiento, y se cuenta dentro de la cartera.</li>
           <li><b>ETP.</b> SPYD y QQQD se compran en dólar MEP (líneas D) al cierre del 02/02, en unidades enteras. Se valúan a cierres de fin de mes, solo por precio: no se contemplan dividendos ni distribuciones. Lo que no alcanza para otra unidad queda en caja.</li>
           <li><b>Cupones.</b> Se acreditan en la fecha de pago y se reinvierten en los cuatro fondos con el valor de la cuotaparte de ese día, repartidos según los pesos de los fondos. El cupón de TTCDO de mayo se cuenta como a cobrar desde el 30/04, cuando el precio ya cotiza sin cupón.</li>
           <li><b>Cupones ya pagados.</b> Se reconstruyen con la tasa y el calendario de cada ON. En PLC5O y TTCDO se usa días reales sobre 365, que es como los muestra el flujo de Puentenet para los cupones futuros. La calculadora de Balanz indica 30/360 para las tres, así que conviene confirmarlo en los prospectos.</li>
           <li><b>Periodicidad.</b> Los precios de las ON y los ETP son cierres de fin de mes, no la serie diaria. El resultado no refleja la volatilidad dentro del mes.</li>
-          <li><b>Comisiones.</b> ON: comisión por operación (0,5% por defecto, editable) sobre la compra inicial, que se suma al costo de cada ON; los cupones y la valuación no pagan comisión. ETP: comisión editable, en 0% por defecto porque no tengo el dato. Fondos: el valor cuota publicado ya refleja los honorarios de administración (ver tabla de características); no se descuentan de nuevo.</li>
+          <li><b>Comisiones.</b> ON: comisión por operación (0,5% por defecto, editable) sobre la compra inicial, que se suma al costo de cada ON; los cupones y la valuación no pagan comisión. ETP: comisión editable, en 0% por defecto porque no tengo el dato. Fondos: no se descuenta el management fee, porque las rentabilidades de los informes mensuales son netas de fees y el valor cuota ya lo refleja.</li>
           <li><b>No incluye</b> impuestos, comisiones de venta ni diferencias entre compra y venta.</li>
-          <li><b>Fuentes.</b> Plataforma de asesores de Balanz (cuotapartes y cotizaciones), informes mensuales de Short Duration y Latam al 31/10/2026, calculadora de bonos de Balanz y flujo de fondos de Puentenet (cupones futuros, teóricos).</li>
+          <li><b>Fuentes.</b> Plataforma de asesores de Balanz (cuotapartes y cotizaciones), informes mensuales de los cuatro fondos al 31/10/2026, calculadora de bonos de Balanz y flujo de fondos de Puentenet (cupones futuros, teóricos).</li>
         </ul>
       </details>
     </section>
@@ -292,8 +293,8 @@ ul{margin:8px 0 0;padding-left:20px} li{margin:0 0 5px}
   var FUNDINFO=[
     ['Balanz Short Duration','02/02/2026','5,18%','0,89','A','0,85%'],
     ['Balanz Latam','20/11/2023','7,31%','3,13','BB+','1,25%'],
-    ['Balanz Balanced','–','–','–','–','–'],
-    ['Balanz Global Equity','–','–','–','–','–']
+    ['Balanz Balanced','18/01/2024','4,62% (1)','0,85 (1)','–','1,50%'],
+    ['Balanz Global Equity','19/05/2025','–','–','–','1,50%']
   ];
   var DEF={amount:100000,short:20,latam:20,balanced:20,global:10,on:20,etp:10,PLC5O:33.3,TTCDO:33.3,YMCXO:33.4,SPYD:60,QQQD:40,tc:1544.8654,comm:0.5,commE:0};
   var IDS={amount:'amount',short:'w-short',latam:'w-latam',balanced:'w-balanced',global:'w-global',on:'w-on',etp:'w-etp',PLC5O:'s-PLC5O',TTCDO:'s-TTCDO',YMCXO:'s-YMCXO',SPYD:'e-SPYD',QQQD:'e-QQQD',tc:'tc',comm:'comm',commE:'commE'};
