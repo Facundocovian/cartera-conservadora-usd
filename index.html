@@ -212,7 +212,7 @@ ul{margin:8px 0 0;padding-left:20px} li{margin:0 0 5px}
       <div class="tw"><table id="rettbl"></table></div>
       <h3 style="margin-top:14px">Mes a mes</h3>
       <div class="tw"><table id="montbl"></table></div>
-      <p class="small muted" style="margin:0">* Feb: del 02/02 al 27/02. Nov: del 30/10 al 06/11. Incluye la comisión de compra de las ON; sin impuestos. Rendimientos pasados no garantizan rendimientos futuros.</p>
+      <p class="small muted" style="margin:0"><span id="ftn"></span> Incluye la comisión de compra de las ON; sin impuestos. Rendimientos pasados no garantizan rendimientos futuros.</p>
     </section>
 
     <section class="sec" aria-labelledby="h-det">
@@ -339,21 +339,23 @@ ul{margin:8px 0 0;padding-left:20px} li{margin:0 0 5px}
     host.innerHTML=svg;
   }
 
+  function sd(d){return d.slice(8,10)+'/'+d.slice(5,7)}
   function retTable(sim){
     var S=sim.series,n=S.length-1,iOct=n-1;
     function r(a,b){return S[b].total/S[a].total-1}
-    var h='<thead><tr><th>Cartera</th><th>1 mes</th><th>3 meses</th><th>6 meses</th><th>Desde el inicio</th><th>Desde el inicio</th></tr><tr class="sub"><th>Hasta</th><th>30/10</th><th>30/10</th><th>30/10</th><th>30/10</th><th>06/11</th></tr></thead><tbody><tr><td>Rentabilidad</td>';
+    var h='<thead><tr><th>Cartera</th><th>1 mes</th><th>3 meses</th><th>6 meses</th><th>Desde el inicio</th><th>Desde el inicio</th></tr><tr class="sub"><th>Hasta</th>'+[0,1,2,3].map(function(){return '<th>'+sd(S[iOct].date)+'</th>'}).join('')+'<th>'+sd(S[n].date)+'</th></tr></thead><tbody><tr><td>Rentabilidad</td>';
     [r(iOct-1,iOct),r(iOct-3,iOct),r(iOct-6,iOct),r(0,iOct),r(0,n)].forEach(function(v){h+='<td class="'+cls(v)+'">'+pct(v)+'</td>'});
     h+='</tr></tbody>';
     $('rettbl').innerHTML=h;
     var mh='<thead><tr><th>Período</th><th>Rentabilidad</th><th>Valor (USD)</th><th>Acumulada</th></tr></thead><tbody>';
     for(var i=1;i<=n;i++){
       var d=S[i].date,mn=['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'][+d.slice(5,7)-1];
-      var lab=i===1?'Febrero (desde 02/02)':i===n?'Noviembre (hasta 06/11)':mn;
+      var lab=i===1?'Febrero (desde 02/02)':i===n?mn+' (hasta '+sd(d)+')':mn;
       var v=r(i-1,i),acc=S[i].total/S[0].total-1;
       mh+='<tr><td>'+lab+'</td><td class="'+cls(v)+'">'+pct(v)+'</td><td>'+nf0.format(S[i].total)+'</td><td class="'+cls(acc)+'">'+pct(acc)+'</td></tr>';
     }
     $('montbl').innerHTML=mh+'</tbody>';
+    var ft=$('ftn'); if(ft) ft.textContent='* '+['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'][+S[1].date.slice(5,7)-1]+': del '+sd(DATA.start)+' al '+sd(S[1].date)+'. '+['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'][+S[n].date.slice(5,7)-1]+': del '+sd(S[n-1].date)+' al '+sd(S[n].date)+'.';
   }
 
   function detTable(sim){
@@ -380,7 +382,7 @@ ul{margin:8px 0 0;padding-left:20px} li{margin:0 0 5px}
     var h='<thead><tr><th>Fondo</th><th>Inicio</th><th>YTM</th><th>Duration</th><th>Calif.</th><th>Mgmt fee</th></tr></thead><tbody>';
     FUNDINFO.forEach(function(r){h+='<tr><td>'+r[0]+'</td>'+r.slice(1).map(function(c){return '<td>'+c+'</td>'}).join('')+'</tr>'});
     $('fundtbl').innerHTML=h+'</tbody>';
-    h='<thead><tr><th>ON</th><th>Cupón</th><th>Vencimiento</th><th>Amortización</th><th>Lámina mín.</th><th>Cierre MEP 06/11</th></tr></thead><tbody>';
+    h='<thead><tr><th>ON</th><th>Cupón</th><th>Vencimiento</th><th>Amortización</th><th>Lámina mín.</th><th>Cierre MEP '+sd(DATA.last)+'</th></tr></thead><tbody>';
     ['PLC5O','TTCDO','YMCXO'].forEach(function(tk){var o=DATA.on[tk],i=ONINFO[tk];
       h+='<tr><td>'+tk+' · '+i.emisor+'</td><td>'+i.cupon+'</td><td>'+i.vto+'</td><td class="wrapc">'+i.amort+'</td><td>'+nf0.format(o.lot)+' VN</td><td>'+nf2.format(o.price[DATA.last]*100)+' ('+o.mep+')</td></tr>';});
     $('ontbl').innerHTML=h+'</tbody>';
