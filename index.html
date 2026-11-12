@@ -365,10 +365,10 @@ ul{margin:8px 0 0;padding-left:20px} li{margin:0 0 5px}
       } else if(r.kind==='on'){
         h+='<tr><td><span class="dot" style="background:var(--c4)"></span>'+r.key+' · '+ONINFO[r.key].emisor+'</td><td>'+usd0(r.inv)+'</td><td>'+nf0.format(r.nom)+' VN</td><td>'+nf2.format(r.p0*100)+' → '+nf2.format(r.price*100)+'</td><td>'+usd0(r.val)+'</td><td>'+usd0(r.coupons+r.recv)+'</td><td class="'+cls(r.res)+'">'+pct(r.res)+'</td></tr>';
       } else if(r.kind==='reinv'){
-        var rr=r.inv>0?r.val/r.inv-1:null;
+        var rr=r.res;
         h+='<tr><td>Cupones reinvertidos en fondos</td><td>'+usd0(r.inv)+'</td><td>–</td><td>–</td><td>'+usd0(r.val)+'</td><td>–</td><td class="'+cls(rr)+'">'+pct(rr)+'</td></tr>';
       } else {
-        h+='<tr><td>Caja por lámina mínima</td><td>'+usd0(r.inv)+'</td><td>–</td><td>–</td><td>'+usd0(r.val)+'</td><td>–</td><td>–</td></tr>';
+        h+='<tr><td>Caja: remanentes y cupones sin reinvertir</td><td>'+usd0(r.inv)+'</td><td>–</td><td>–</td><td>'+usd0(r.val)+'</td><td>–</td><td>–</td></tr>';
       }
     });
     var tot=sim.last.total,res=sim.A>0?tot/sim.A-1:null;

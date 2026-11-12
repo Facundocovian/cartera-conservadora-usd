@@ -22,11 +22,11 @@ function simulate(p){
   events.sort((a,b)=>a.pay<b.pay?-1:a.pay>b.pay?1:0);
 
   function at(t){
-    const uR={short:0,latam:0,income:0}, pf={short:0,latam:0,income:0}; let paid=0, recv=0, idleCash=0;
+    const uR={short:0,latam:0,income:0}, pf={short:0,latam:0,income:0}; let paid=0, recv=0, idleCash=0, rc=0;
     events.forEach(e=>{
       if(e.pay<=t){
         paid+=e.cash;
-        if(fundW>0) FUNDS.forEach(k=>{ pf[k]+=e.cash*(W[k]/fundW); const n=navAt(k,e.pay), u=Math.floor(pf[k]/n/CPMIN+1e-9)*CPMIN; uR[k]+=u; pf[k]-=u*n; }); else idleCash+=e.cash;
+        if(fundW>0) FUNDS.forEach(k=>{ pf[k]+=e.cash*(W[k]/fundW); const n=navAt(k,e.pay), u=Math.floor(pf[k]/n/CPMIN+1e-9)*CPMIN; uR[k]+=u; rc+=u*n; pf[k]-=u*n; }); else idleCash+=e.cash;
       } else if(e.ex<=t){ recv+=e.cash; }
     });
     FUNDS.forEach(k=>{ idleCash+=pf[k]; });
@@ -34,7 +34,7 @@ function simulate(p){
     FUNDS.forEach(k=>{ const n=navAt(k,t); fundsOwn+=units0[k]*n; fundsReinv+=uR[k]*n; });
     let onVal=0; ONS.forEach(tk=>{ onVal+=pos[tk].nom*DATA.on[tk].price[t]; });
     const total=fundsOwn+fundsReinv+onVal+cash0+idleCash+recv;
-    return {date:t,total,fundsOwn,fundsReinv,onVal,cash:cash0+idleCash,recv,paid,uR};
+    return {date:t,total,fundsOwn,fundsReinv,onVal,cash:cash0+idleCash,recv,paid,uR,rc};
   }
   const series=DATA.dates.map(at);
   const last=series[series.length-1], t=last.date;
@@ -46,9 +46,8 @@ function simulate(p){
     const rec=events.filter(e=>e.tk===tk&&e.pay>t&&e.ex<=t).reduce((s,e)=>s+e.cash,0);
     rows.push({key:tk,kind:'on',inv:q.cost,budget:q.budget,nom:q.nom,p0:q.p0,price,val,coupons:cps,recv:rec,minCost:q.minCost,comm:q.comm,res:q.cost>0?(val+cps+rec)/q.cost-1:null});
   });
-  const reinvInv=last.paid;
-  rows.push({key:'reinv',kind:'reinv',inv:reinvInv,val:last.fundsReinv+last.recv,res:null});
-  rows.push({key:'cash',kind:'cash',inv:cash0,val:last.cash,res:null});
+  rows.push({key:'reinv',kind:'reinv',inv:last.rc,val:last.fundsReinv,res:last.rc>0?last.fundsReinv/last.rc-1:null});
+  rows.push({key:'cash',kind:'cash',inv:cash0,val:last.cash+last.recv,res:null});
   return {A,W,S,fundW,series,last,rows,events,commTotal};
 }
 function ret(series,a,b){ return series[b].total/series[a].total-1; }
