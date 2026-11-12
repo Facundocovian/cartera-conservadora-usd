@@ -175,7 +175,7 @@ ul{margin:8px 0 0;padding-left:20px} li{margin:0 0 5px}
     </fieldset>
     <fieldset>
       <legend>Comisión de compra de ETP (%)</legend>
-      <input id="commE" type="number" min="0" step="0.05" value="0" aria-label="Comisión por operación en ETP, porcentaje">
+      <input id="commE" type="number" min="0" step="0.05" value="0.5" aria-label="Comisión por operación en ETP, porcentaje">
       <p class="status" id="st-c"></p>
     </fieldset>
     <button class="btn" type="button" id="reset">Restablecer valores</button>
@@ -257,7 +257,7 @@ ul{margin:8px 0 0;padding-left:20px} li{margin:0 0 5px}
           <li><b>Cupones.</b> Se acreditan en la fecha de pago y se reinvierten en los cuatro fondos con el valor de la cuotaparte de ese día, repartidos según los pesos de los fondos. El cupón de TTCDO de mayo se cuenta como a cobrar desde el 30/04, cuando el precio ya cotiza sin cupón.</li>
           <li><b>Cupones ya pagados.</b> Se reconstruyen con la tasa y el calendario de cada ON. En PLC5O y TTCDO se usa días reales sobre 365, que es como los muestra el flujo de Puentenet para los cupones futuros. La calculadora de Balanz indica 30/360 para las tres, así que conviene confirmarlo en los prospectos.</li>
           <li><b>Periodicidad.</b> Los precios de las ON y los ETP son cierres de fin de mes, no la serie diaria. El resultado no refleja la volatilidad dentro del mes.</li>
-          <li><b>Comisiones.</b> ON: comisión por operación (0,5% por defecto, editable) sobre la compra inicial, que se suma al costo de cada ON; los cupones y la valuación no pagan comisión. ETP: comisión editable, en 0% por defecto porque no tengo el dato. Fondos: no se descuenta el management fee, porque las rentabilidades de los informes mensuales son netas de fees y el valor cuota ya lo refleja.</li>
+          <li><b>Comisiones.</b> ON: comisión por operación (0,5% por defecto, editable) sobre la compra inicial, que se suma al costo de cada ON; los cupones y la valuación no pagan comisión. ETP: comisión por operación de 0,5% por defecto (editable) sobre la compra inicial, que se suma al costo. Fondos: no se descuenta el management fee, porque las rentabilidades de los informes mensuales son netas de fees y el valor cuota ya lo refleja.</li>
           <li><b>No incluye</b> impuestos, comisiones de venta ni diferencias entre compra y venta.</li>
           <li><b>Fuentes.</b> Plataforma de asesores de Balanz (cuotapartes y cotizaciones), informes mensuales de los cuatro fondos al 31/10/2026, calculadora de bonos de Balanz y flujo de fondos de Puentenet (cupones futuros, teóricos).</li>
         </ul>
@@ -296,7 +296,7 @@ ul{margin:8px 0 0;padding-left:20px} li{margin:0 0 5px}
     ['Balanz Balanced','18/01/2024','4,62% (1)','0,85 (1)','–','1,50%'],
     ['Balanz Global Equity','19/05/2025','–','–','–','1,50%']
   ];
-  var DEF={amount:100000,short:20,latam:20,balanced:20,global:10,on:20,etp:10,PLC5O:33.3,TTCDO:33.3,YMCXO:33.4,SPYD:60,QQQD:40,tc:1544.8654,comm:0.5,commE:0};
+  var DEF={amount:100000,short:20,latam:20,balanced:20,global:10,on:20,etp:10,PLC5O:33.3,TTCDO:33.3,YMCXO:33.4,SPYD:60,QQQD:40,tc:1544.8654,comm:0.5,commE:0.5};
   var IDS={amount:'amount',short:'w-short',latam:'w-latam',balanced:'w-balanced',global:'w-global',on:'w-on',etp:'w-etp',PLC5O:'s-PLC5O',TTCDO:'s-TTCDO',YMCXO:'s-YMCXO',SPYD:'e-SPYD',QQQD:'e-QQQD',tc:'tc',comm:'comm',commE:'commE'};
   var lastSim=null;
 
